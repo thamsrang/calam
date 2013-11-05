@@ -1,4 +1,4 @@
 calam
 =====
 
-The java script library like java Calender.
+A java script library like java Calender.
