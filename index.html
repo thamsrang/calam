@@ -67,32 +67,99 @@ example:
 <a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example:</h2>
 
 <ul>
-<li><p>Here the <code>onSet</code> and <code>onRemove</code> functions are called when the hash "#company" sets or remove respectively. 
-<code>$(window).hashchange(
-            {
-                hash: "#company",
-                onSet: function() {
-                    $("#compList").show();
-                },
-                onRemove:function(){
-                    $("#compList").hide();
-                }
+<li>
+<p>Here the <code>onSet</code> and <code>onRemove</code> functions are called when the hash "#company" sets or remove respectively. 
+`
+$(window).hashchange(</p>
+
+<pre><code>        {
+
+            hash: "#company",
+
+            onSet: function() {
+
+                $("#compList").show();
+
+            },
+
+            onRemove:function(){
+
+                $("#compList").hide();
+
             }
-);</code></p></li>
-<li><p>Setting hash functions (<code>onSet</code> and <code>onRemove</code>) for dynamic hashes. Getting the values in <code>onSet</code> and <code>onRemove</code> functions.
-For example the url is <a href="http://abc.com/company.html#company/123">http://abc.com/company.html#company/123</a> . Then the 123 dynamic value pass to <code>onSet</code> and <code>onRemove</code> as array.</p></li>
-</ul><p><code>{
-    hash: "#company/%s",
-    regex: true,
-    onSet: function(arr) {
-              var companyId=arr[0];
-              $("#compDetail").show();
-           },
-    onRemove:function(arr){
-              var companyId=arr[0];
-              $("#compDetail").hide();
-           }
- }</code> </p>
+
+        }
+</code></pre>
+</li>
+</ul><p>);</p>
+
+<p>`</p>
+
+<ul>
+<li>Setting hash functions (<code>onSet</code> and <code>onRemove</code>) for dynamic hashes. Getting the values in <code>onSet</code> and <code>onRemove</code> functions.
+For example the url is <a href="http://abc.com/company.html#company/123">http://abc.com/company.html#company/123</a> . Then the 123 dynamic value pass to <code>onSet</code> and <code>onRemove</code> as array.</li>
+</ul><p>`
+// Decalre hash function in array.</p>
+
+<p>$(window).hashchange([</p>
+
+<p>{</p>
+
+<pre><code>hash: "#company/%s",
+
+regex: true,
+
+onSet: function(arr) {
+
+          var companyId=arr[0];
+
+          $("#compDetail").show();
+
+       },
+
+onRemove:function(arr){
+
+          var companyId=arr[0];
+
+          $("#compDetail").hide();
+
+       }
+</code></pre>
+
+<p>},</p>
+
+<p>{</p>
+
+<pre><code>hash: "#company/%s/emp/%s",
+
+regex: true,
+
+onSet: function(arr) {
+
+          var companyId=arr[0];
+
+          var employeeId=arr[1];
+
+          $("#empDetail").show();
+
+       },
+
+onRemove:function(arr){
+
+          var companyId=arr[0];
+
+          var employeeId=arr[1];
+
+          $("#empDetail").hide();
+
+       }
+</code></pre>
+
+<p>}</p>
+
+<p>]);</p>
+
+<p>` </p>
 
 <p>To get complete reference see index.html in demo directory.   </p>
       </section>
