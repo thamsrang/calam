@@ -3,11 +3,12 @@ JQuery Hashchange
 
 Plugin for dynamic fragment values.
 
-*Call the function `onSet()` and `onRemove()` when the matched hash values sets and removes.
+* Call the function `onSet()` and `onRemove()` when the matched hash values sets and removes.
 
 
-` $(window).hashchange([`
-                `{`
+`$(window).hashchange([`
+
+                {
                     hash: "#company/%s",
                     regex: true,
                     onSet: function(arr) {
