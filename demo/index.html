@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jquery hashchange</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="../dist/jquery-hashchange.min.js"></script>
+    <style>
+          body{
+              margin: 50px 20px;
+              margin-left: 18%;
+              margin-right: 18%;
+          }
+          .text-center {
+              text-align: center;
+          }
+          table, th, td
+          {
+              border: 1px solid black;
+              padding: 5px;
+          }
+        .mt20{
+            margin-top: 20px ;
+        }
+    </style>
+    <script>
+        $(function(){
+
+            $(window).hashchange([
+                {
+                    hash: "#company",
+                    onSet: function() {
+                        $("#compList").show();
+                    },
+                    onRemove:function(){
+                        $("#compList").hide();
+                    }
+                },
+                {
+                    hash: "#company/%s",
+                    regex: true,
+                    onSet: function(arr) {
+                       if(arr[0] == "microsoft"){
+                           $("#compVwCompNm").text("Microsoft");
+                           $("#compVwEmps").text("101,914");
+                       }
+                       else if(arr[0] == "google"){
+                           $("#compVwCompNm").text("Google");
+                           $("#compVwEmps").text("47,760");
+                       }
+                       else if(arr[0] == "facebook"){
+                           $("#compVwCompNm").text("Facebook");
+                           $("#compVwEmps").text("6,818");
+                       }
+                        $("#compDetail").show();
+                    },
+                    onRemove:function(arr){
+                        $("#compDetail").hide();
+                    }
+                },
+                {
+                    hash: "#company/%s/emp/%s",
+                    regex: true,
+                    onSet: function(arr) {
+                        if(arr[0] == "microsoft" && arr[1] == "satya"){
+                            $("#empVwCompNm").text("Microsoft").attr("href", "#company/microsoft");
+                            $("#empVwEmps").text("Satya Nadella");
+                            $("#empVwDob").text("1967");
+                        }
+                        else if(arr[0] == "google" &&  arr[1] == "page"){
+                            $("#empVwCompNm").text("Google").attr("href", "#company/google");
+                            $("#empVwEmps").text("Larry Page");
+                            $("#empVwDob").text("March 26, 1973");
+                        }
+                        else if(arr[0] == "facebook" && arr[1] == "mark"){
+                            $("#empVwCompNm").text("Facebook").attr("href", "#company/facebook");
+                            $("#empVwEmps").text("Mark Zuckerberg");
+                            $("#empVwDob").text("May 14, 1984");
+                        }
+                        $("#empDetail").show();
+                    },
+                    onRemove:function(arr){
+                        $("#empDetail").hide();
+                    }
+                }
+            ]);
+        });
+    </script>
+</head>
+<body>
+       <div>
+           <span>Click the link to view company list</span>
+           <a href="#company">Company List</a>
+       </div>
+       <div id="compList" class="align-center mt20" style="display: none;">
+           <table class="text-center">
+               <thead>
+               <tr>
+                   <th>Company Name</th>
+                   <th>CEO</th>
+                   <th>No. of Employee</th>
+                   <th>Website</th>
+               </tr>
+               </thead>
+               <tbody>
+                   <tr>
+                       <td><a href="#company/microsoft">Microsoft</a></td>
+                       <td><a href="#company/microsoft/emp/satya">Satya Nadella</a></td>
+                       <td>101,914</td>
+                       <td><a href="http://microsoft.com/">microsoft.com</a></td>
+                   </tr>
+                    <tr>
+                        <td><a href="#company/google">Google</a></td>
+                        <td><a href="#company/google/emp/page">Larry Page</a></td>
+                        <td>47,760</td>
+                        <td><a href="http://google.com/">google.com</a></td>
+                    </tr>
+                </tbody>
+               <tr>
+                   <td><a href="#company/facebook">Facebook</a></td>
+                   <td><a href="#company/facebook/emp/mark">Mark Zuckerberg</a></td>
+                   <td>6,818</td>
+                   <td><a href="http://facebook.com/">facebook.com</a></td>
+               </tr>
+           </table>
+       </div>
+       <div id="compDetail" style="display: none;">
+           <table class="mt20">
+               <tbody>
+                    <tr>
+                        <td>Company Name</td>
+                        <td id="compVwCompNm"></td>
+                    </tr>
+                    <tr>
+                        <td>Key Employee</td>
+                        <td id="compVwEmps"></td>
+                    </tr>
+               </tbody>
+           </table>
+       </div>
+       <div id="empDetail" style="display: none;">
+           <table class="mt20">
+               <tbody>
+               <tr>
+                   <td>Company Name</td>
+                   <td><a id="empVwCompNm"></a></td>
+               </tr>
+               <tr>
+                   <td>Employee Name</td>
+                   <td id="empVwEmps"></td>
+               </tr>
+               <tr>
+                   <td>DOB</td>
+                   <td id="empVwDob"></td>
+               </tr>
+               </tbody>
+           </table>
+       </div>
+</body>
+</html>

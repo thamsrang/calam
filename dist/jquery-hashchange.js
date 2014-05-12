@@ -1,0 +1,102 @@
+;(function($) {
+    "use strict";
+    var methods = {
+        init: function(options) {
+            // Replacing dynamic fragment by regex
+            if(options.regex){
+                options.hash=options.hash.replace(/%s/g, "([^&]+)");
+            }
+            var settings = $.extend({
+                "hash"     : "",
+                "regex"    : false,
+                "onSet"    : function(){},
+                "onRemove" : function(){}
+            }, options);
+
+            if (!settings.hash) {
+                return this;
+            }
+            // bind to hashchange at first time and init global variables
+            if (!$.hashchange) {
+                $.hashchange = {};
+                $.hashchange.regexhash = [];
+                $.hashchange.onSet = {};
+                $.hashchange.onRemove = {};
+                $.hashchange.prevHash = "";
+
+                $.hashchange.listener = function() {
+                    // if hash didn't change - do nothing
+                    if (window.location.hash === $.hashchange.prevHash) {
+                        return;
+                    }
+
+                    var onRemove = $.hashchange.onRemove[$.hashchange.prevHash],
+                        onSet = $.hashchange.onSet[window.location.hash];
+                    if (onRemove) {
+                        onRemove();
+                    }else{
+                        var matcher=methods.regexmatcher($.hashchange.prevHash);
+                        if(matcher.matched){
+                            onRemove=$.hashchange.onRemove[matcher.regex];
+                            onRemove(matcher.values);
+                        }
+                    }
+
+                    if (onSet) {
+                        onSet();
+                    }else{
+                        var matcher=methods.regexmatcher(window.location.hash);
+                        if(matcher.matched){
+                            onSet=$.hashchange.onSet[matcher.regex];
+                            onSet(matcher.values);
+                        }
+                    }
+                    $.hashchange.prevHash = window.location.hash;
+                };
+
+                this.bind("hashchange", $.hashchange.listener);
+            }
+            if(settings.regex){
+                $.hashchange.regexhash.push(settings.hash);
+            }
+            $.hashchange.onSet[settings.hash] = settings.onSet;
+            $.hashchange.onRemove[settings.hash] = settings.onRemove;
+            // fire hashchange if current hash equals given
+            // and it is not already active or regex true
+            if ((window.location.hash === settings.hash &&
+                window.location.hash !== $.hashchange.prevHash) || methods.regexmatcher(window.location.hash).matched) {
+                $.hashchange.listener();
+            }
+            return this;
+        },
+        regexmatcher:function(hash){
+            var regArr=$.hashchange.regexhash;
+            var values=[];
+            var rgx="";
+            var matched=false;
+            for (var i = 0, len = regArr.length; i < len; i++) {
+                var rgxEx=new RegExp(regArr[i]);
+                if(rgxEx.test(hash)){
+                    rgx = regArr[i];
+                    values = hash.match(rgxEx);
+                    values=values.slice(1, values.length);
+                    matched=true;
+                    break;
+                }
+            }
+            return {regex:rgx, values:values, matched:matched};
+        }
+    };
+    $.fn.hashchange = function(options) {
+
+        // options array passed
+        if (Object.prototype.toString.call(options) === "[object Array]") {
+            for (var i = options.length - 1; i >= 0; i--) {
+                methods.init.apply(this, [options[i]]);
+            }
+            return this;
+        }
+        // single option passed
+        return methods.init.apply(this, arguments);
+    };
+}(window.jQuery));
