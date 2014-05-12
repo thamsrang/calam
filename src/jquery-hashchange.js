@@ -35,20 +35,20 @@
                     if (onRemove) {
                         onRemove();
                     }else{
-                        var matcher=methods.regexmatcher($.hashchange.prevHash);
-                        if(matcher.matched){
-                            onRemove=$.hashchange.onRemove[matcher.regex];
-                            onRemove(matcher.values);
+                        var rmMatcher=methods.regexmatcher($.hashchange.prevHash);
+                        if(rmMatcher.matched){
+                            onRemove=$.hashchange.onRemove[rmMatcher.regex];
+                            onRemove(rmMatcher.values);
                         }
                     }
 
                     if (onSet) {
                         onSet();
                     }else{
-                        var matcher=methods.regexmatcher(window.location.hash);
-                        if(matcher.matched){
-                            onSet=$.hashchange.onSet[matcher.regex];
-                            onSet(matcher.values);
+                        var setMatcher=methods.regexmatcher(window.location.hash);
+                        if(setMatcher.matched){
+                            onSet=$.hashchange.onSet[setMatcher.regex];
+                            onSet(setMatcher.values);
                         }
                     }
                     $.hashchange.prevHash = window.location.hash;
@@ -56,15 +56,17 @@
 
                 this.bind("hashchange", $.hashchange.listener);
             }
+            var isMatched=false;
             if(settings.regex){
                 $.hashchange.regexhash.push(settings.hash);
+                isMatched=methods.regexmatcher(window.location.hash).matched
             }
             $.hashchange.onSet[settings.hash] = settings.onSet;
             $.hashchange.onRemove[settings.hash] = settings.onRemove;
             // fire hashchange if current hash equals given
             // and it is not already active or regex true
             if ((window.location.hash === settings.hash &&
-                window.location.hash !== $.hashchange.prevHash) || methods.regexmatcher(window.location.hash).matched) {
+                window.location.hash !== $.hashchange.prevHash) || isMatched) {
                 $.hashchange.listener();
             }
             return this;
