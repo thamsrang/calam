@@ -56,18 +56,10 @@
 
                 this.bind("hashchange", $.hashchange.listener);
             }
-            var isMatched=false;
-            if(settings.regex){
-                $.hashchange.regexhash.push(settings.hash);
-                isMatched=methods.regexmatcher(window.location.hash).matched
-            }
             $.hashchange.onSet[settings.hash] = settings.onSet;
             $.hashchange.onRemove[settings.hash] = settings.onRemove;
-            // fire hashchange if current hash equals given
-            // and it is not already active or regex true
-            if ((window.location.hash === settings.hash &&
-                window.location.hash !== $.hashchange.prevHash) || isMatched) {
-                $.hashchange.listener();
+            if(settings.regex){
+                $.hashchange.regexhash.push(settings.hash);
             }
             return this;
         },
@@ -95,6 +87,9 @@
         if (Object.prototype.toString.call(options) === "[object Array]") {
             for (var i = options.length - 1; i >= 0; i--) {
                 methods.init.apply(this, [options[i]]);
+            }
+            if($.hashchange){
+                $.hashchange.listener();
             }
             return this;
         }

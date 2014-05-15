@@ -3,7 +3,7 @@
 <head>
     <title>jquery hashchange</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script type="text/javascript" src="../dist/jquery-hashchange.min.js"></script>
+    <script type="text/javascript" src="../src/jquery-hashchange.js"></script>
     <style>
           body{
               margin: 50px 20px;
@@ -36,25 +36,12 @@
                     }
                 },
                 {
-                    hash: "#company/%s",
-                    regex: true,
-                    onSet: function(arr) {
-                       if(arr[0] == "microsoft"){
-                           $("#compVwCompNm").text("Microsoft");
-                           $("#compVwEmps").text("101,914");
-                       }
-                       else if(arr[0] == "google"){
-                           $("#compVwCompNm").text("Google");
-                           $("#compVwEmps").text("47,760");
-                       }
-                       else if(arr[0] == "facebook"){
-                           $("#compVwCompNm").text("Facebook");
-                           $("#compVwEmps").text("6,818");
-                       }
-                        $("#compDetail").show();
+                    hash: "#company/add",
+                    onSet: function() {
+                        $("#compAdd").show();
                     },
-                    onRemove:function(arr){
-                        $("#compDetail").hide();
+                    onRemove:function(){
+                        $("#compAdd").hide();
                     }
                 },
                 {
@@ -81,6 +68,28 @@
                     onRemove:function(arr){
                         $("#empDetail").hide();
                     }
+                },
+                {
+                    hash: "#company/%s",
+                    regex: true,
+                    onSet: function(arr) {
+                        if(arr[0] == "microsoft"){
+                            $("#compVwCompNm").text("Microsoft");
+                            $("#compVwEmps").text("101,914");
+                        }
+                        else if(arr[0] == "google"){
+                            $("#compVwCompNm").text("Google");
+                            $("#compVwEmps").text("47,760");
+                        }
+                        else if(arr[0] == "facebook"){
+                            $("#compVwCompNm").text("Facebook");
+                            $("#compVwEmps").text("6,818");
+                        }
+                        $("#compDetail").show();
+                    },
+                    onRemove:function(arr){
+                        $("#compDetail").hide();
+                    }
                 }
             ]);
         });
@@ -90,6 +99,8 @@
        <div>
            <span>Click the link to view company list</span>
            <a href="#company">Company List</a>
+           <span> & </span>
+           <a href="#company/add">Add Company</a>
        </div>
        <div id="compList" class="align-center mt20" style="display: none;">
            <table class="text-center">
@@ -120,6 +131,26 @@
                    <td><a href="#company/facebook/emp/mark">Mark Zuckerberg</a></td>
                    <td>6,818</td>
                    <td><a href="http://facebook.com/">facebook.com</a></td>
+               </tr>
+           </table>
+       </div>
+       <div id="compAdd" style="display: none;">
+           <table class="mt20">
+               <tr>
+                   <td>Company Name</td>
+                   <td><input type="text" placeholder="Company Name"></td>
+               </tr>
+               <tr>
+                   <td>CEO Name</td>
+                   <td><input type="text" placeholder="CEO Name"></td>
+               </tr>
+               <tr>
+                   <td>Total No. of Employees</td>
+                   <td><input type="text" placeholder="Total Employees"></td>
+               </tr>
+               <tr>
+                   <td><div align="center"><button>Save</button></div></td>
+                   <td><div align="center"><button><a href="#company">Cancel</a></button></div></td>
                </tr>
            </table>
        </div>
